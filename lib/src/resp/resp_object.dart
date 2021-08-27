@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:redis_dart/src/resp/resp_types.dart';
 
 abstract class RespObject {
@@ -8,6 +10,7 @@ abstract class RespObject {
   RespObject(this.content);
 
   String serialize() => '$identifier${content.toString()}$crlf';
+
   dynamic toObject() => content;
 
   @override
@@ -73,7 +76,7 @@ class RespBulkString extends RespObject {
   final int length;
 
   RespBulkString(this.content)
-      : length = content?.length ?? -1,
+      : length = content != null ? utf8.encode(content).length : -1,
         super(content);
 
   @override
